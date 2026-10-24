@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XYT SHOP - Premium Discord Services & Automated Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Orbitron -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        discord: {
+                            purple: '#5865F2',
+                            hover: '#4752C4',
+                            dark: '#0f1117',
+                            card: '#181b23',
+                            sidebar: '#12141c',
+                            border: '#2a2e3d'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        brand: ['Orbitron', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0c0e14;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(24, 27, 35, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(88, 101, 242, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(88, 101, 242, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2e3d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5865F2;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-discord-purple selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-discord-purple via-indigo-600 to-purple-600 text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2 shadow-lg">
+        <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider animate-pulse">🔥 DİSKORD HİZMETLERİ</span>
+        <span id="top-announcement">XYT SHOP - OwO Cash, Nitrolu Hesap ve Sunucu Hizmetlerinde 7/24 Anında Destek!</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-discord-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-discord-purple to-indigo-500 flex items-center justify-center shadow-lg shadow-discord-purple/30 font-brand text-2xl font-black text-white tracking-wider">
+                        X
+                    </div>
+                    <div>
+                        <span class="font-brand text-2xl font-black tracking-wider text-white bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400">XYT SHOP</span>
+                        <span class="block text-[10px] font-semibold tracking-widest text-discord-purple uppercase">Discord Sales Hub</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-white bg-discord-purple/20 border border-discord-purple/40 transition">
+                        <i class="fa-solid fa-house mr-2"></i><span data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</span>
+                    </button>
+                    <button onclick="switchTab('shop')" id="nav-shop" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-cart-shopping mr-2"></i><span data-tr="Mağaza" data-en="Shop">Mağaza</span>
+                    </button>
+                    <button onclick="switchTab('payments')" id="nav-payments" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-credit-card mr-2"></i><span data-tr="Ödeme Yöntemleri" data-en="Payment Methods">Ödeme Yöntemleri</span>
+                    </button>
+                    <button onclick="switchTab('chats')" id="nav-chats" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition relative">
+                        <i class="fa-solid fa-comments mr-2"></i><span data-tr="Satış Sohbetlerim" data-en="My Sales Chats">Satış Sohbetlerim</span>
+                        <span id="active-chat-badge" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></span>
+                    </button>
+                    <button onclick="switchTab('admin')" id="nav-admin" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-amber-400 hover:bg-amber-400/10 transition hidden border border-amber-500/30">
+                        <i class="fa-solid fa-user-shield mr-2"></i><span>Admin Panel</span>
+                    </button>
+                </nav>
+
+                <!-- Right Actions: Language, Add Balance & Auth -->
+                <div class="flex items-center gap-3">
+                    
+                    <!-- Top up Balance Button -->
+                    <button onclick="openBalanceModal()" class="hidden sm:flex items-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span data-tr="Bakiye Yükle" data-en="Add Balance">Bakiye Yükle</span>
+                    </button>
+
+                    <!-- Language Switcher -->
+                    <div class="relative bg-discord-sidebar border border-discord-border rounded-xl p-1 flex items-center shadow-inner">
+                        <button id="lang-tr" onclick="setLanguage('tr')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-discord-purple text-white shadow">
+                            <span>🇹🇷</span> TR
+                        </button>
+                        <button id="lang-en" onclick="setLanguage('en')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-gray-400 hover:text-white">
+                            <span>🇺🇸</span> EN
+                        </button>
+                    </div>
+
+                    <!-- Auth Button / Profile -->
+                    <div id="auth-container">
+                        <button onclick="toggleDiscordLogin()" class="bg-discord-purple hover:bg-discord-hover text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-discord-purple/25 transition active:scale-95">
+                            <i class="fa-brands fa-discord text-lg"></i>
+                            <span id="login-btn-text" data-tr="Giriş Yap" data-en="Login">Giriş Yap</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= PAGE 1: HOME PAGE ================= -->
+        <section id="page-home" class="space-y-12">
+            
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden glass-panel p-8 sm:p-12 border border-discord-border/60 shadow-2xl">
+                <div class="absolute -top-24 -right-24 w-96 h-96 bg-discord-purple/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 max-w-2xl space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-discord-purple/10 border border-discord-purple/30 text-discord-purple text-xs font-bold tracking-wide">
+                        <i class="fa-solid fa-headset text-yellow-400"></i>
+                        <span data-tr="CANLI DİSKORD SATIŞ KANALI ENTEGRASYONU" data-en="LIVE DISCORD SALES CHANNEL INTEGRATION">CANLI DİSKORD SATIŞ KANALI ENTEGRASYONU</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white font-brand leading-tight">
+                        XYT SHOP <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-discord-purple via-indigo-400 to-purple-400">DISCORD HUB</span>
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg leading-relaxed" data-tr="Siteden siparişinizi verin, Discord sunucumuzda adınıza özel 'satıs-kullanıcıadı' kanalı açılsın ve yetkili ekibimizle anında canlı sohbet ederek teslim alın." data-en="Place your order on the site, an exclusive 'satıs-username' channel will open in our Discord server, and receive instant support from our staff.">
+                        Siteden siparişinizi verin, Discord sunucumuzda adınıza özel <code class="text-discord-purple bg-discord-dark px-2 py-0.5 rounded font-mono">satıs-kullanıcıadı</code> kanalı açılsın ve yetkili ekibimizle anında canlı sohbet ederek teslim alın.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="switchTab('shop')" class="bg-discord-purple hover:bg-discord-hover text-white px-8 py-3.5 rounded-xl text-base font-bold flex items-center gap-3 shadow-lg shadow-discord-purple/30 transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span data-tr="Ürünleri İncele" data-en="Browse Products">Ürünleri İncele</span>
+                        </button>
+                        <button onclick="switchTab('payments')" class="bg-discord-card border border-discord-border hover:bg-white/5 text-gray-200 px-6 py-3.5 rounded-xl text-base font-semibold transition">
+                            <i class="fa-solid fa-wallet mr-2 text-discord-purple"></i>
+                            <span data-tr="Ödeme Yöntemleri" data-en="Payment Methods">Ödeme Yöntemleri</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Badges -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 pt-8 border-t border-discord-border/50">
+                    <div class="bg-discord-dark/50 p-4 rounded-2xl border border-discord-border/40 text-center">
+                        <div class="text-2xl font-black text-white font-brand">OwO Cash</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1" data-tr="Geçerli Ödeme Yöntemi" data-en="Accepted Currency">Geçerli Ödeme Yöntemi</div>
+                    </div>
+                    <div class="bg-discord-dark/50 p-4 rounded-2xl border border-discord-border/40 text-center">
+                        <div class="text-2xl font-black text-discord-purple font-brand">Müşteri Rolü</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1" data-tr="Otomatik Rol Verimi" data-en="Auto Role Assignment">Otomatik Rol Verimi</div>
+                    </div>
+                    <div class="bg-discord-dark/50 p-4 rounded-2xl border border-discord-border/40 text-center">
+                        <div class="text-2xl font-black text-emerald-400 font-brand">Satışlar #</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1" data-tr="Canlı Ticket Kategorisi" data-en="Live Ticket Category">Canlı Ticket Kategorisi</div>
+                    </div>
+                    <div class="bg-discord-dark/50 p-4 rounded-2xl border border-discord-border/40 text-center">
+                        <div class="text-2xl font-black text-amber-400 font-brand">7/24</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1" data-tr="Hızlı Yetkili Desteği" data-en="Fast Staff Support">Hızlı Yetkili Desteği</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Grid -->
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-extrabold text-white font-brand flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-discord-purple"></i>
+                        <span data-tr="Kategorilerimiz" data-en="Our Categories">Kategorilerimiz</span>
+                    </h2>
+                    <span class="text-xs text-gray-400" data-tr="Discord kanallarıyla tam uyumlu" data-en="Fully compatible with Discord channels">Discord kanallarıyla tam uyumlu</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="category-cards-container">
+                    <!-- Dynamic Categories -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= PAGE 2: SHOP PAGE ================= -->
+        <section id="page-shop" class="hidden space-y-8">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-discord-card p-6 rounded-2xl border border-discord-border">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white font-brand" data-tr="XYT SHOP Mağaza" data-en="XYT SHOP Store">XYT SHOP Mağaza</h2>
+                    <p class="text-sm text-gray-400 mt-1" data-tr="Tüm fiyatlar OwO Cash ve diğer yöntemler için geçerlidir. Sipariş verdiğinizde sohbet açılır." data-en="All prices listed are in OwO Cash and standard payments. Ordering opens a live sales chat.">Tüm fiyatlar OwO Cash ve diğer yöntemler için geçerlidir. Sipariş verdiğinizde sohbet açılır.</p>
+                </div>
+
+                <!-- Category Filters Bar -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0" id="filter-buttons">
+                    <!-- Dynamic Filters -->
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="products-grid">
+                <!-- Products loaded via JS -->
+            </div>
+
+        </section>
+
+        <!-- ================= PAGE 3: PAYMENT METHODS ================= -->
+        <section id="page-payments" class="hidden space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span class="px-3 py-1 bg-discord-purple/20 border border-discord-purple/40 text-discord-purple text-xs font-bold rounded-full uppercase tracking-widest">💳 ÖDEME REHBERİ</span>
+                <h2 class="text-3xl font-black text-white font-brand" data-tr="XYT SHOP Ödeme Yöntemleri" data-en="XYT SHOP Payment Methods">XYT SHOP Ödeme Yöntemleri</h2>
+                <p class="text-gray-400 text-sm leading-relaxed" data-tr="Alışverişinizi kolaylaştırmak için birden fazla ödeme yöntemi sunuyoruz. Bakiye yükleyebilir veya sipariş sonrası açılan 'satıs-kullanıcıadı' sohbetinden ödemenizi yetkilimize iletebilirsiniz." data-en="We offer multiple payment options to make shopping easy. You can top up balance or send payment details directly inside your opened 'satıs-username' ticket channel.">
+                    Alışverişinizi kolaylaştırmak için birden fazla ödeme yöntemi sunuyoruz. Bakiye yükleyebilir veya sipariş sonrası açılan <code class="text-white bg-discord-dark px-1.5 py-0.5 rounded">satıs-kullanıcıadı</code> sohbetinden ödemenizi yetkilimize iletebilirsiniz.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- OwO Cash -->
+                <div class="glass-panel p-6 rounded-2xl border border-discord-border space-y-4 relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-black border border-amber-500/30">
+                        🦉
+                    </div>
+                    <h3 class="text-xl font-bold text-white">OwO Cash</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed" data-tr="OwO Cash ile ödemelerinizde doğru alıcı ve miktarı kontrol edin. Komut detayları ticket sohbetinde iletilir." data-en="Check target user and amount for OwO transfers. Instructions sent in ticket chat.">OwO Cash ile ödemelerinizde doğru alıcı ve miktarı kontrol edin. Komut detayları ticket sohbetinde iletilir.</p>
+                    <span class="inline-block text-[10px] bg-amber-500/20 text-amber-300 px-2 py-1 rounded font-bold uppercase">En Popüler</span>
+                </div>
+
+                <!-- IBAN -->
+                <div class="glass-panel p-6 rounded-2xl border border-discord-border space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-xl font-black border border-blue-500/30">
+                        🏦
+                    </div>
+                    <h3 class="text-xl font-bold text-white" data-tr="IBAN / Transfer" data-en="IBAN / Transfer">IBAN / Transfer</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed" data-tr="Banka havalesi ve FAST ile ödemeleriniz için IBAN bilgisi yalnızca yetkili ekibimiz tarafından ticket içerisinden iletilir." data-en="Bank transfer IBAN details provided strictly inside ticket chat by authorized staff.">Banka havalesi ve FAST ile ödemeleriniz için IBAN bilgisi yalnızca yetkili ekibimiz tarafından ticket içerisinden iletilir.</p>
+                </div>
+
+                <!-- PayPal -->
+                <div class="glass-panel p-6 rounded-2xl border border-discord-border space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl font-black border border-indigo-500/30">
+                        🅿️
+                    </div>
+                    <h3 class="text-xl font-bold text-white">PayPal</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed" data-tr="Yurtdışı müşterilerimiz PayPal üzerinden ödeme yapabilir. Güncel PayPal e-postası yetkili ekibimizce verilir." data-en="International customers can pay via PayPal. Current PayPal address provided by staff.">Yurtdışı müşterilerimiz PayPal üzerinden ödeme yapabilir. Güncel PayPal e-postası yetkili ekibimizce verilir.</p>
+                </div>
+
+                <!-- Crypto -->
+                <div class="glass-panel p-6 rounded-2xl border border-discord-border space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-black border border-emerald-500/30">
+                        ₿
+                    </div>
+                    <h3 class="text-xl font-bold text-white" data-tr="Crypto / Kripto" data-en="Crypto Currency">Crypto / Kripto</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed" data-tr="LTC, USDT (TRC20) ve BTC ödemeleri kabul edilir. Transfer yaparken doğru ağı seçtiğinizden emin olun." data-en="LTC, USDT (TRC20) & BTC accepted. Please verify the network before sending.">LTC, USDT (TRC20) ve BTC ödemeleri kabul edilir. Transfer yaparken doğru ağı seçtiğinizden emin olun.</p>
+                </div>
+            </div>
+
+            <!-- How it works guide -->
+            <div class="bg-discord-card border border-discord-border rounded-3xl p-8 space-y-6">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-discord-purple"></i>
+                    <span data-tr="Nasıl Ödeme Yapabilir & Sipariş Alabilirsiniz?" data-en="How to Pay & Receive Orders?">Nasıl Ödeme Yapabilir & Sipariş Alabilirsiniz?</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="bg-discord-dark/70 p-4 rounded-xl border border-discord-border/50 text-xs space-y-2">
+                        <span class="text-discord-purple font-black text-base">1.</span>
+                        <p class="text-gray-300 font-semibold" data-tr="Ürünü Seçin" data-en="Select Product">Ürünü Seçin</p>
+                        <p class="text-gray-500" data-tr="İhtiyacınız olan paketi mağazadan belirleyin." data-en="Choose your package from shop.">İhtiyacınız olan paketi mağazadan belirleyin.</p>
+                    </div>
+                    <div class="bg-discord-dark/70 p-4 rounded-xl border border-discord-border/50 text-xs space-y-2">
+                        <span class="text-discord-purple font-black text-base">2.</span>
+                        <p class="text-gray-300 font-semibold" data-tr="Sohbet Açın" data-en="Open Ticket">Sohbet Açın</p>
+                        <p class="text-gray-500" data-tr="Sipariş verin, 'Satışlar' altında sohbet açılır." data-en="Order to open channel under 'Satışlar'.">Sipariş verin, 'Satışlar' altında sohbet açılır.</p>
+                    </div>
+                    <div class="bg-discord-dark/70 p-4 rounded-xl border border-discord-border/50 text-xs space-y-2">
+                        <span class="text-discord-purple font-black text-base">3.</span>
+                        <p class="text-gray-300 font-semibold" data-tr="Yöntemi Bildirin" data-en="Select Payment">Yöntemi Bildirin</p>
+                        <p class="text-gray-500" data-tr="Kullanacağınız ödeme yöntemini iletin." data-en="Inform staff about your payment method.">Kullanacağınız ödeme yöntemini iletin.</p>
+                    </div>
+                    <div class="bg-discord-dark/70 p-4 rounded-xl border border-discord-border/50 text-xs space-y-2">
+                        <span class="text-discord-purple font-black text-base">4.</span>
+                        <p class="text-gray-300 font-semibold" data-tr="Ödemeyi Yapın" data-en="Complete Payment">Ödemeyi Yapın</p>
+                        <p class="text-gray-500" data-tr="İletilen adrese ödemeyi gönderip teyit edin." data-en="Send payment to provided address.">İletilen adrese ödemeyi gönderip teyit edin.</p>
+                    </div>
+                    <div class="bg-discord-dark/70 p-4 rounded-xl border border-discord-border/50 text-xs space-y-2">
+                        <span class="text-emerald-400 font-black text-base">5.</span>
+                        <p class="text-gray-300 font-semibold" data-tr="Teslim Alın" data-en="Receive Delivery">Teslim Alın</p>
+                        <p class="text-gray-500" data-tr="Siparişinizi alın ve Müşteri rolü kazanın!" data-en="Get delivery + Customer role assigned!">Siparişinizi alın ve Müşteri rolü kazanın!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: LIVE DISCORD CHATS ================= -->
+        <section id="page-chats" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-discord-card p-6 rounded-2xl border border-discord-border">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white font-brand flex items-center gap-2">
+                        <i class="fa-solid fa-headset text-discord-purple"></i>
+                        <span data-tr="Canlı Discord Satış Sohbeti" data-en="Live Discord Sales Chat">Canlı Discord Satış Sohbeti</span>
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1" data-tr="Bu ekran Discord sunucumuzdaki 'Satışlar' kategorisine bağlı 'satıs-kullanıcıadı' kanalıyla eş zamanlı çalışır." data-en="Synced in real-time with 'satıs-username' channel under 'Satışlar' in our Discord server.">Bu ekran Discord sunucumuzdaki 'Satışlar' kategorisine bağlı <code class="text-discord-purple font-mono">satıs-[kullanıcı-adı]</code> kanalıyla eş zamanlı çalışır.</p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-xs font-bold text-emerald-400" data-tr="Canlı Bağlantı Aktif" data-en="Live Connection Active">Canlı Bağlantı Aktif</span>
+                </div>
+            </div>
+
+            <!-- Main Chat Box UI -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Channels list on left -->
+                <div class="glass-panel rounded-2xl p-4 border border-discord-border space-y-4">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center justify-between">
+                        <span>📁 SATIŞLAR KATEGORİSİ</span>
+                        <i class="fa-brands fa-discord text-discord-purple"></i>
+                    </div>
+
+                    <div id="user-tickets-list" class="space-y-2">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Chat Box Screen on right -->
+                <div class="lg:col-span-3 glass-panel rounded-2xl border border-discord-border flex flex-col h-[520px]">
+                    <!-- Chat Header -->
+                    <div class="p-4 border-b border-discord-border/80 flex items-center justify-between bg-discord-sidebar/60 rounded-t-2xl">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-hashtag text-gray-400 text-lg"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm" id="chat-channel-name">satıs-xyt_user</h4>
+                                <span class="text-[11px] text-gray-400" id="chat-channel-product">Ürün: 100 Türk Online Üye</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <span class="bg-discord-purple/20 border border-discord-purple/30 text-discord-purple text-[10px] font-bold px-2.5 py-1 rounded-full uppercase" id="chat-channel-status">AÇIK</span>
+                        </div>
+                    </div>
+
+                    <!-- Messages Container -->
+                    <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-4 text-sm font-sans">
+                        <!-- Dynamic Messages -->
+                    </div>
+
+                    <!-- Chat Input Box -->
+                    <div class="p-3 border-t border-discord-border bg-discord-dark/80 rounded-b-2xl">
+                        <form onsubmit="sendChatMessage(event)" class="flex gap-2">
+                            <input type="text" id="chat-input" placeholder="Yetkili ekibimize mesaj yazın..." class="flex-grow bg-discord-card border border-discord-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-discord-purple transition">
+                            <button type="submit" class="bg-discord-purple hover:bg-discord-hover text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-discord-purple/20">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span data-tr="Gönder" data-en="Send">Gönder</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: ADMIN PANEL ================= -->
+        <section id="page-admin" class="hidden space-y-8">
+            <div class="bg-amber-500/10 border border-amber-500/30 p-6 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl font-bold">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white font-brand">XYT SHOP - Admin Yönetim Paneli</h2>
+                        <p class="text-xs text-gray-400" data-tr="Yönetici rolü doğrulandı. Kategori durumlarını açıp kapatabilir, stok ve ürün detaylarını düzenleyebilirsiniz." data-en="Admin privileges verified. Toggle categories ON/OFF and manage shop settings.">Yönetici rolü doğrulandı. Kategori durumlarını açıp kapatabilir, stok ve ürün detaylarını düzenleyebilirsiniz.</p>
+                    </div>
+                </div>
+
+                <div class="px-3 py-1.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold border border-amber-400/30 uppercase">
+                    Yönetici Yetkisi Aktif
+                </div>
+            </div>
+
+            <!-- Admin Category Visibility Toggles -->
+            <div class="glass-panel p-6 rounded-2xl border border-discord-border space-y-6">
+                <h3 class="text-lg font-bold text-white font-brand flex items-center gap-2">
+                    <i class="fa-solid fa-toggle-on text-discord-purple"></i>
+                    <span data-tr="Kategori Görünürlük Kontrolü (Aç / Kapat)" data-en="Category Visibility Controls (ON / OFF)">Kategori Görünürlük Kontrolü (Aç / Kapat)</span>
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-category-toggles">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Admin Stats & Order Management -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-2xl border border-discord-border space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center justify-between">
+                        <span data-tr="Açık Discord Satış Sohbetleri" data-en="Active Discord Sales Chats">Açık Discord Satış Sohbetleri</span>
+                        <span class="text-xs text-discord-purple bg-discord-purple/20 px-2.5 py-1 rounded-full font-bold" id="admin-ticket-count">1 Sohbet</span>
+                    </h3>
+                    <div class="space-y-3" id="admin-tickets-list">
+                        <!-- Dynamic Ticket List for Admin -->
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-discord-border space-y-4">
+                    <h3 class="text-base font-bold text-white" data-tr="Hızlı Mağaza İşlemleri" data-en="Quick Store Actions">Hızlı Mağaza İşlemleri</h3>
+                    <div class="space-y-3">
+                        <div class="bg-discord-dark p-4 rounded-xl border border-discord-border flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xs font-bold text-white" data-tr="Yeni Ürün Ekle" data-en="Add New Product">Yeni Ürün Ekle</h4>
+                                <p class="text-[11px] text-gray-400" data-tr="Mağazaya yeni Discord hizmeti tanımlayın" data-en="Define new Discord service">Mağazaya yeni Discord hizmeti tanımlayın</p>
+                            </div>
+                            <button onclick="alert('Demo Modu: Yeni ürün ekleme formu aktif.')" class="bg-discord-purple hover:bg-discord-hover text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">Ekle</button>
+                        </div>
+                        <div class="bg-discord-dark p-4 rounded-xl border border-discord-border flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xs font-bold text-white" data-tr="Tüm Bakiyeleri Sıfırla" data-en="Reset All Balances">Tüm Bakiyeleri Sıfırla</h4>
+                                <p class="text-[11px] text-gray-400" data-tr="Kullanıcı cüzdan bakiyelerini düzenle" data-en="Manage user wallet balances">Kullanıcı cüzdan bakiyelerini düzenle</p>
+                            </div>
+                            <button onclick="alert('İşlem başarılı!')" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-lg text-xs font-bold transition">Sıfırla</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-discord-border py-8 mt-12 text-center text-xs text-gray-500 space-y-2">
+        <p class="font-brand font-bold text-gray-300">XYT SHOP © 2026 - All Rights Reserved</p>
+        <p data-tr="Discord otomasyonu, OwO Cash ödemeleri ve anında canlı satış kanalı entegrasyonu." data-en="Discord automation, OwO Cash payments and instant live sales channel integration.">Discord otomasyonu, OwO Cash ödemeleri ve anında canlı satış kanalı entegrasyonu.</p>
+    </footer>
+
+    <!-- Modal: Login / Discord Connect -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div class="glass-panel max-md w-full max-w-md rounded-3xl p-6 border border-discord-border space-y-6 shadow-2xl relative">
+            <button onclick="toggleDiscordLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center space-y-2">
+                <div class="w-16 h-16 rounded-2xl bg-discord-purple flex items-center justify-center mx-auto text-white text-3xl shadow-lg shadow-discord-purple/40">
+                    <i class="fa-brands fa-discord"></i>
+                </div>
+                <h3 class="text-xl font-black text-white font-brand" data-tr="Discord ile Giriş Yap" data-en="Login with Discord">Discord ile Giriş Yap</h3>
+                <p class="text-xs text-gray-400" data-tr="XYT SHOP hesabınızı bağlayın, otomatik rollerinizi ve sipariş sohbetlerinizi yönetin." data-en="Connect your XYT SHOP account to manage auto-roles and orders.">XYT SHOP hesabınızı bağlayın, otomatik rollerinizi ve sipariş sohbetlerinizi yönetin.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1" data-tr="Discord Kullanıcı Adınız" data-en="Discord Username">Discord Kullanıcı Adınız</label>
+                    <input type="text" id="login-username-input" placeholder="örn: xyt_user" class="w-full bg-discord-dark border border-discord-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-discord-purple">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1" data-tr="Discord ID (İsteğe bağlı)" data-en="Discord ID (Optional)">Discord ID (İsteğe bağlı)</label>
+                    <input type="text" id="login-id-input" placeholder="örn: 987654321098765432" class="w-full bg-discord-dark border border-discord-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-discord-purple">
+                </div>
+
+                <button onclick="performLogin()" class="w-full bg-discord-purple hover:bg-discord-hover text-white py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-discord-purple/30">
+                    <span data-tr="Discord Hesabını Bağla" data-en="Connect Discord Account">Discord Hesabını Bağla</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Balance -->
+    <div id="balance-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div class="glass-panel max-w-md w-full rounded-3xl p-6 border border-discord-border space-y-6 relative">
+            <button onclick="openBalanceModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center space-y-2">
+                <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto text-2xl font-black">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <h3 class="text-xl font-black text-white font-brand" data-tr="Bakiye Yükle" data-en="Add Balance">Bakiye Yükle</h3>
+                <p class="text-xs text-gray-400" data-tr="OwO Cash veya diğer ödeme yöntemleri ile cüzdanınıza bakiye ekleyin." data-en="Top up your wallet with OwO Cash or standard payments.">OwO Cash veya diğer ödeme yöntemleri ile cüzdanınıza bakiye ekleyin.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1" data-tr="Yüklemek İstediğiniz Miktar ($)" data-en="Amount to Add ($)">Yüklemek İstediğiniz Miktar ($)</label>
+                    <input type="number" id="balance-amount" value="50" class="w-full bg-discord-dark border border-discord-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-discord-purple">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1" data-tr="Ödeme Yöntemi" data-en="Payment Method">Ödeme Yöntemi</label>
+                    <select id="balance-method" class="w-full bg-discord-dark border border-discord-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-discord-purple">
+                        <option value="OwO Cash">OwO Cash (Önerilen)</option>
+                        <option value="IBAN / FAST">IBAN / FAST (TR)</option>
+                        <option value="Crypto (LTC/USDT)">Crypto (LTC/USDT)</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                </div>
+
+                <button onclick="submitBalance()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-500/20">
+                    <span data-tr="Sohbet Kanalı Açarak Bildir" data-en="Notify via Ticket Channel">Sohbet Kanalı Açarak Bildir</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // State management
+        let currentLang = 'tr';
+        let currentUser = null; // { name: 'xyt_user', role: 'Müşteri', isAdmin: false, balance: 120 }
+        let currentTab = 'home';
+        let activeChatId = 1;
+
+        // Mock Categories
+        let categories = [
+            { id: 'nitro', nameTr: 'Discord Nitro & Boost', nameEn: 'Discord Nitro & Boost', active: true, icon: 'fa-rocket', descTr: '1 Aylık/Yıllık Nitro ve Sunucu Basımları', descEn: 'Monthly/Yearly Nitro & Server Boosts' },
+            { id: 'members', nameTr: 'Sunucu Üye Hizmetleri', nameEn: 'Server Member Services', active: true, icon: 'fa-users', descTr: 'Türk/Yabancı Online veya Çevrimdışı Üyeler', descEn: 'Turkish/Foreign Online or Offline Members' },
+            { id: 'bots', nameTr: 'Özel Bot & Altyapı', nameEn: 'Custom Bot & Infrastructure', active: true, icon: 'fa-robot', descTr: 'Moderatör, Ticket ve Özel Bot Yazılımları', descEn: 'Moderator, Ticket & Custom Bot Software' },
+            { id: 'accounts', nameTr: 'Onaylı / Eski Hesaplar', nameEn: 'Verified / Aged Accounts', active: true, icon: 'fa-user-check', descTr: 'Telefon Onaylı, Yaşlı ve Full Profilli Hesaplar', descEn: 'Phone verified, aged and full profile accounts' }
+        ];
+
+        // Mock Products
+        let products = [
+            { id: 1, category: 'nitro', name: '1 Aylık Discord Nitro (Gift Link)', price: '45,000 OwO / $3.50', descTr: 'Anında teslimat, resmi hediye bağlantısı.', descEn: 'Instant delivery, official gift link.', stock: 14 },
+            { id: 2, category: 'nitro', name: '14x Sunucu Boost (1 Aylık)', price: '80,000 OwO / $6.00', descTr: 'Sunucunuza 3. Seviye rozeti kazandırır.', descEn: 'Brings Level 3 badge to your server.', stock: 8 },
+            { id: 3, category: 'members', name: '100 Türk Online Gerçek Üye', price: '30,000 OwO / $2.50', descTr: 'Aktif görünen kaliteli Türk kullanıcılar.', descEn: 'Active-looking quality Turkish users.', stock: 50 },
+            { id: 4, category: 'members', name: '500 Çevrimdışı Sunucu Üyesi', price: '50,000 OwO / $4.00', descTr: 'Düşmeyen, uzun ömürlü bot/üye paketi.', descEn: 'Non-drop, long-lasting bot/member package.', stock: 35 },
+            { id: 5, category: 'bots', name: 'Gelişmiş Ticket & Moderasyon Botu', price: '120,000 OwO / $10.00', descTr: 'Source kod dahil, 7/24 hosting hediyeli.', descEn: 'Includes source code, free 24/7 hosting.', stock: 5 },
+            { id: 6, category: 'accounts', name: '2021 Eski Tarihli Onaylı Hesap', price: '25,000 OwO / $2.00', descTr: 'Maç / sunucu doğrulamaları için ideal.', descEn: 'Ideal for match / server verification.', stock: 22 }
+        ];
+
+        // Mock Tickets / Chats
+        let tickets = [
+            { id: 1, channelName: 'satıs-xyt_user', product: '100 Türk Online Üye', status: 'AÇIK', unread: false, messages: [
+                { sender: 'Bot', text: 'XYT SHOP Otomatik Satış Sistemi aktif edildi. Yetkili ekibimiz birazdan sizinle ilgilenecektir.', time: '18:00', isSystem: true },
+                { sender: 'xyt_user', text: 'Merhaba, siparişimi verdim OwO ile ödemeyi nereye atacağım?', time: '18:01', isUser: true },
+                { sender: 'XYT Yetkili', text: 'Merhaba! owo cash transferini `owo cash send @XYT_Bot [miktar]` komutu ile gerçekleştirebilirsiniz.', time: '18:02', isStaff: true }
+            ]}
+        ];
+
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderProducts();
+            renderFilters();
+            renderTicketsList();
+            renderAdminCategoryToggles();
+            renderAdminTickets();
+            updateChatView();
+        });
+
+        // Tab Switching
+        function switchTab(tabId) {
+            currentTab = tabId;
+            ['home', 'shop', 'payments', 'chats', 'admin'].forEach(t => {
+                const sec = document.getElementById('page-' + t);
+                const btn = document.getElementById('nav-' + t);
+                if(sec) sec.classList.add('hidden');
+                if(btn) {
+                    btn.className = "nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition";
+                }
+            });
+
+            const activeSec = document.getElementById('page-' + tabId);
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if(activeSec) activeSec.classList.remove('hidden');
+            if(activeBtn) {
+                if(tabId === 'admin') {
+                    activeBtn.className = "nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-amber-400 bg-amber-400/10 border border-amber-500/30 transition";
+                } else {
+                    activeBtn.className = "nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-white bg-discord-purple/20 border border-discord-purple/40 transition";
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Language Switcher
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('lang-tr').className = lang === 'tr' ? "px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-discord-purple text-white shadow" : "px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-gray-400 hover:text-white";
+            document.getElementById('lang-en').className = lang === 'en' ? "px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-discord-purple text-white shadow" : "px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-gray-400 hover:text-white";
+
+            document.querySelectorAll('[data-tr]').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if(text) el.innerText = text;
+            });
+        }
+
+        // Render Categories on Home
+        function renderCategories() {
+            const container = document.getElementById('category-cards-container');
+            container.innerHTML = categories.filter(c => c.active).map(c => `
+                <div class="glass-card p-6 rounded-2xl space-y-3 cursor-pointer" onclick="switchTab('shop')">
+                    <div class="w-12 h-12 rounded-xl bg-discord-purple/20 border border-discord-purple/30 text-discord-purple flex items-center justify-center text-xl">
+                        <i class="fa-solid ${c.icon}"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white font-brand">${currentLang === 'tr' ? c.nameTr : c.nameEn}</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">${currentLang === 'tr' ? c.descTr : c.descEn}</p>
+                    <div class="pt-2 flex items-center text-xs font-bold text-discord-purple gap-1">
+                        <span>Mağazada İncele</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Shop Filters
+        function renderFilters() {
+            const filterContainer = document.getElementById('filter-buttons');
+            let html = `<button onclick="filterProducts('all')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-discord-purple text-white transition">Tümü</button>`;
+            categories.filter(c => c.active).forEach(c => {
+                html += `<button onclick="filterProducts('${c.id}')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-discord-card border border-discord-border text-gray-300 hover:text-white transition">${currentLang === 'tr' ? c.nameTr : c.nameEn}</button>`;
+            });
+            filterContainer.innerHTML = html;
+        }
+
+        // Render Products
+        let activeFilter = 'all';
+        function filterProducts(catId) {
+            activeFilter = catId;
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const filtered = activeFilter === 'all' ? products : products.filter(p => p.category === activeFilter);
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="glass-panel p-6 rounded-2xl border border-discord-border space-y-4 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] bg-discord-purple/20 text-discord-purple px-2.5 py-1 rounded-full font-bold uppercase">Stok: ${p.stock} Adet</span>
+                            <span class="text-xs font-mono text-emerald-400 font-bold">${p.price}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">${p.name}</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">${currentLang === 'tr' ? p.descTr : p.descEn}</p>
+                    </div>
+
+                    <button onclick="buyProduct('${p.name}')" class="w-full bg-discord-purple hover:bg-discord-hover text-white py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-discord-purple/25 transition active:scale-95">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        <span>Sipariş Ver & Sohbet Aç</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Buy Product & Create Ticket
+        function buyProduct(productName) {
+            if(!currentUser) {
+                alert('Sipariş vermek ve canlı satış kanalı açmak için önce Discord ile giriş yapmalısınız!');
+                toggleDiscordLogin();
+                return;
+            }
+
+            const newTicket = {
+                id: tickets.length + 1,
+                channelName: `satıs-${currentUser.name.toLowerCase()}`,
+                product: productName,
+                status: 'AÇIK',
+                unread: false,
+                messages: [
+                    { sender: 'Bot', text: `Yeni sipariş oluşturuldu: ${productName}. Discord sunucumuzda #${'satıs-' + currentUser.name.toLowerCase()} kanalı yetkililerimize iletildi.`, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), isSystem: true },
+                    { sender: currentUser.name, text: `Merhaba, "${productName}" için sipariş oluşturdum. Ödemeyi yapmaya hazırım.`, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), isUser: true }
+                ]
+            };
+            tickets.unshift(newTicket);
+            activeChatId = newTicket.id;
+            renderTicketsList();
+            renderAdminTickets();
+            updateChatView();
+            switchTab('chats');
+        }
+
+        // Auth Modal Toggle
+        function toggleDiscordLogin() {
+            const modal = document.getElementById('login-modal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+
+        function performLogin() {
+            const usernameInput = document.getElementById('login-username-input').value.trim();
+            if(!usernameInput) {
+                alert('Lütfen Discord kullanıcı adınızı girin.');
+                return;
+            }
+
+            const isAdmin = usernameInput.toLowerCase() === 'admin' || usernameInput.toLowerCase() === 'xyt';
+            currentUser = {
+                name: usernameInput,
+                role: isAdmin ? 'Yönetici' : 'Müşteri',
+                isAdmin: isAdmin,
+                balance: 150
+            };
+
+            document.getElementById('auth-container').innerHTML = `
+                <div class="flex items-center gap-2 bg-discord-card border border-discord-border px-3 py-1.5 rounded-xl">
+                    <div class="w-7 h-7 rounded-lg bg-discord-purple flex items-center justify-center text-white text-xs font-bold">
+                        ${currentUser.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div class="text-left hidden sm:block">
+                        <div class="text-xs font-bold text-white leading-none">${currentUser.name}</div>
+                        <div class="text-[10px] text-emerald-400 font-semibold">$${currentUser.balance}.00</div>
+                    </div>
+                </div>
+            `;
+
+            if(isAdmin) {
+                document.getElementById('nav-admin').classList.remove('hidden');
+            }
+
+            toggleDiscordLogin();
+            alert(`Başarıyla giriş yapıldı: @${currentUser.name} (${currentUser.role})`);
+        }
+
+        // Balance Modal
+        function openBalanceModal() {
+            const modal = document.getElementById('balance-modal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+
+        function submitBalance() {
+            if(!currentUser) {
+                alert('Önce Discord ile giriş yapmalısınız!');
+                openBalanceModal();
+                toggleDiscordLogin();
+                return;
+            }
+            const amt = document.getElementById('balance-amount').value;
+            const method = document.getElementById('balance-method').value;
+            openBalanceModal();
+            buyProduct(`Bakiye Yükleme ($${amt} - ${method})`);
+        }
+
+        // Render Chat Tickets List
+        function renderTicketsList() {
+            const list = document.getElementById('user-tickets-list');
+            list.innerHTML = tickets.map(t => `
+                <div onclick="selectTicket(${t.id})" class="p-3 rounded-xl border cursor-pointer transition ${t.id === activeChatId ? 'bg-discord-purple/20 border-discord-purple/50 text-white' : 'bg-discord-dark/50 border-discord-border/60 text-gray-400 hover:bg-white/5'}">
+                    <div class="flex items-center justify-between text-xs font-bold">
+                        <span class="truncate">#${t.channelName}</span>
+                        <span class="w-2 h-2 rounded-full ${t.status === 'AÇIK' ? 'bg-emerald-400' : 'bg-gray-500'}"></span>
+                    </div>
+                    <div class="text-[10px] text-gray-500 truncate mt-1">${t.product}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectTicket(id) {
+            activeChatId = id;
+            renderTicketsList();
+            updateChatView();
+        }
+
+        function updateChatView() {
+            const ticket = tickets.find(t => t.id === activeChatId);
+            if(!ticket) return;
+
+            document.getElementById('chat-channel-name').innerText = ticket.channelName;
+            document.getElementById('chat-channel-product').innerText = `Ürün / Konu: ${ticket.product}`;
+            document.getElementById('chat-channel-status').innerText = ticket.status;
+
+            const msgContainer = document.getElementById('chat-messages');
+            msgContainer.innerHTML = ticket.messages.map(m => {
+                if(m.isSystem) {
+                    return `<div class="text-center my-2"><span class="bg-discord-border/50 text-gray-400 text-[11px] px-3 py-1 rounded-full"><i class="fa-solid fa-circle-info mr-1"></i> ${m.text}</span></div>`;
+                }
+                const isMe = currentUser && m.sender === currentUser.name;
+                return `
+                    <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'} space-y-1">
+                        <div class="flex items-center gap-2 text-xs text-gray-400 font-semibold">
+                            <span>${m.sender}</span>
+                            <span class="text-[10px] text-gray-600">${m.time}</span>
+                        </div>
+                        <div class="max-w-[80%] p-3 rounded-2xl text-xs leading-relaxed ${isMe ? 'bg-discord-purple text-white rounded-br-none' : 'bg-discord-card border border-discord-border text-gray-200 rounded-bl-none'}">
+                            ${m.text}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+
+        function sendChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if(!text) return;
+
+            const ticket = tickets.find(t => t.id === activeChatId);
+            if(!ticket) return;
+
+            const senderName = currentUser ? currentUser.name : 'Misafir_User';
+            ticket.messages.push({
+                sender: senderName,
+                text: text,
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                isUser: true
+            });
+            input.value = '';
+            updateChatView();
+
+            // Simulate staff automated reply
+            setTimeout(() => {
+                ticket.messages.push({
+                    sender: 'XYT Yetkili Ekip',
+                    text: 'Mesajınız alındı. Yetkilimiz en kısa sürede teslimat detaylarını bu kanaldan iletecektir.',
+                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    isStaff: true
+                });
+                updateChatView();
+            }, 1200);
+        }
+
+        // Admin Panel Functions
+        function renderAdminCategoryToggles() {
+            const container = document.getElementById('admin-category-toggles');
+            container.innerHTML = categories.map(c => `
+                <div class="bg-discord-dark p-4 rounded-xl border border-discord-border flex items-center justify-between">
+                    <div>
+                        <h4 class="text-xs font-bold text-white">${c.nameTr}</h4>
+                        <span class="text-[10px] text-gray-400">${c.active ? 'Durum: Açık (Görünür)' : 'Durum: Kapalı (Gizli)'}</span>
+                    </div>
+                    <button onclick="toggleCategory('${c.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition ${c.active ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}">
+                        ${c.active ? 'Kapat' : 'Aç'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function toggleCategory(id) {
+            const cat = categories.find(c => c.id === id);
+            if(cat) {
+                cat.active = !cat.active;
+                renderCategories();
+                renderFilters();
+                renderAdminCategoryToggles();
+            }
+        }
+
+        function renderAdminTickets() {
+            document.getElementById('admin-ticket-count').innerText = tickets.length + ' Sohbet';
+            const list = document.getElementById('admin-tickets-list');
+            list.innerHTML = tickets.map(t => `
+                <div class="bg-discord-dark p-3 rounded-xl border border-discord-border flex items-center justify-between">
+                    <div>
+                        <h4 class="text-xs font-bold text-white">#${t.channelName}</h4>
+                        <span class="text-[10px] text-gray-400">${t.product}</span>
+                    </div>
+                    <button onclick="activeChatId=${t.id}; switchTab('chats'); updateChatView();" class="bg-discord-purple/20 text-discord-purple border border-discord-purple/30 px-3 py-1 rounded-lg text-xs font-bold">
+                        Yönet
+                    </button>
+                </div>
+            `).join('');
+        }
+        function toggleDiscordLogin() {
+    // Sizi bilgisayarınızdaki backend üzerinden gerçek Discord giriş ekranına yönlendirir
+    window.location.href = "http://localhost:3000/api/auth/login";
+}
+
+// Sayfa yüklendiğinde Discord'dan gelen gerçek kullanıcı verisini oku
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userDataParam = urlParams.get('user');
+
+    if (userDataParam) {
+        const user = JSON.parse(decodeURIComponent(userDataParam));
+        
+        // Kullanıcı Profilini Ekrana Bas
+        document.getElementById('login-btn-text').innerText = user.username;
+        
+        // GERÇEK ADMİN KONTROLÜ: Eğer Admin ise paneli göster!
+        if (user.isAdmin) {
+            document.getElementById('nav-admin').classList.remove('hidden');
+            alert(`Hoş geldin Yetkili ${user.username}! Admin paneline erişiminiz açıldı.`);
+        } else {
+            document.getElementById('nav-admin').classList.add('hidden');
+        }
+    }
+});
+
+    </script>
+</body>
+</html>
